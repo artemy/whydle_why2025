@@ -16,8 +16,13 @@
 #define WORDLE_LETTER_ORIGINAL_SIZE 32
 #define WORDLE_LETTER_TARGET_SIZE 64
 
+#ifdef RISCV_BUILD
+#define BMP_PATH "APPS:[WHYDLE]letters.bmp"
+#define WORDS_PATH "APPS:[WHYDLE]sgb-words.txt"
+#else
 #define BMP_PATH "./res/letters.bmp"
 #define WORDS_PATH "./res/wordle-answers-alphabetical.txt"
+#endif
 
 typedef enum wordle_match_t
 {
@@ -261,8 +266,8 @@ char* wordle_read_words(const char* file_path, int* word_count)
     int line_count = 1;
     {
         int counted_valid = 0;
-        char c;
-        while ((c = (char)fgetc(f)) != EOF)
+        int c;
+        while ((c = fgetc(f)) != EOF)
         {
             if (c == '\n')
             {
@@ -288,8 +293,8 @@ char* wordle_read_words(const char* file_path, int* word_count)
     {
         int word_index = 0;
         int letter_index = 0;
-        char c;
-        while ((c = (char)fgetc(f)) != EOF && word_index < line_count)
+        int c;
+        while ((c = fgetc(f)) != EOF && word_index < line_count)
         {
             char* word_ptr = out_arr + WORDLE_LETTER_COUNT * word_index;
             if (c == '\n')
@@ -347,6 +352,9 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* e)
     if (e->type == SDL_EVENT_KEY_DOWN)
     {
         const SDL_KeyboardEvent key = e->key;
+        if (key.key == SDLK_ESCAPE) {
+            return SDL_APP_SUCCESS;
+        }
         if (key.key == SDLK_BACKSPACE)
         {
             if (!game_data->end_game && game_data->letter_index > 0)
