@@ -56,3 +56,6 @@ _deps
 # Ninja
 .ninja_deps
 .ninja_log
+
+# JetBrains IDE
+.idea

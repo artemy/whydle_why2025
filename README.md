@@ -1,5 +1,6 @@
-A wordle clone in C and SDL2(https://libsdl.org). Play the original here: https://www.powerlanguage.co.uk/wordle/
+A wordle clone in C and SDL3 (https://libsdl.org).
+Forked from https://github.com/AndreiRafael/wordle_clone
 
-Uses five letter word list from The Standford GraphBase(https://www-cs-faculty.stanford.edu/~knuth/sgb.html).
+Uses five-letter word list from https://gist.github.com/cfreshman/a03ef2cba789d8cf00c08f767e0fad7b.
 
-Compatible with C99. Builds on windows with MSVC/Mingw. Builds on linux with GCC. Can also be built with emscripten(https://emscripten.org).
+Compatible with C23. Builds on linux/macOS with GCC.
