@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 4.0)
 
-set(GAME_TITLE wordle_clone)
+set(GAME_TITLE whydle2025)
 
 project(${GAME_TITLE} C)
 
@@ -32,10 +32,10 @@ if(ENABLE_RISCV_BUILD)
 
     set(SDL3_STATIC_LIB "${CMAKE_SYSROOT}/lib/libsdl3.a")
 
-    add_executable(wordle_clone ./src/main.c)
+    add_executable(${GAME_TITLE} ./src/main.c)
 
     # Set executable properties for RISC-V
-    set_target_properties(wordle_clone PROPERTIES
+    set_target_properties(${GAME_TITLE} PROPERTIES
             LINK_FLAGS "-shared -Wl,--strip-debug -Wl,--gc-sections -Wl,--exclude-libs,libsdl3.a -e main"
             SUFFIX ".elf"
     )
@@ -43,7 +43,7 @@ if(ENABLE_RISCV_BUILD)
     # Link against the static SDL3 library
     if(SDL3_STATIC_LIB)
         message(STATUS "Found SDL3 static library: ${SDL3_STATIC_LIB}")
-        target_link_libraries(wordle_clone ${SDL3_STATIC_LIB})
+        target_link_libraries(${GAME_TITLE} ${SDL3_STATIC_LIB})
     else()
         message(FATAL_ERROR "SDL3 static library not found")
     endif()
@@ -54,11 +54,11 @@ else()
     file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res/wordle-answers-alphabetical.txt DESTINATION ${RESOURCES_DESTINATION})
     file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res/letters.bmp DESTINATION ${RESOURCES_DESTINATION})
 
-    add_executable(wordle_clone ./src/main.c)
+    add_executable(${GAME_TITLE} ./src/main.c)
 
     target_link_libraries(${GAME_TITLE} PUBLIC ${CMAKE_DL_LIBS} m pthread)
     find_package(SDL3 REQUIRED)
     target_link_libraries(${GAME_TITLE} PUBLIC ${SDL3_LIBRARIES})
 endif()
 
-target_compile_options(wordle_clone PRIVATE -Wall -Wextra -Wpedantic -Werror)
+target_compile_options(${GAME_TITLE} PRIVATE -Wall -Wextra -Wpedantic -Werror)

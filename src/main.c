@@ -17,8 +17,8 @@
 #define WORDLE_LETTER_TARGET_SIZE 64
 
 #ifdef RISCV_BUILD
-#define BMP_PATH "APPS:[WHYDLE]letters.bmp"
-#define WORDS_PATH "APPS:[WHYDLE]sgb-words.txt"
+#define BMP_PATH "APPS:[WHYDLE2025]letters.bmp"
+#define WORDS_PATH "APPS:[WHYDLE2025]wordle-answers-alphabetical.txt"
 #else
 #define BMP_PATH "./res/letters.bmp"
 #define WORDS_PATH "./res/wordle-answers-alphabetical.txt"
