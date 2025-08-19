@@ -53,7 +53,7 @@ typedef struct game_data_t
     char* full_letter_board;
     wordle_match_t* full_result_board;
 
-    float flash_timer;
+    Uint64 flash_timer;
     Uint64 prev_ticks;
 } game_data_t;
 
@@ -398,7 +398,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* e)
                 }
                 else
                 {
-                    game_data->flash_timer = 1.f;
+                    game_data->flash_timer = 1000; // 1000 milliseconds for 1 second flash
                 }
             }
         }
@@ -424,9 +424,9 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     Uint64 new_ticks = SDL_GetTicks();
     Uint64 delta_ticks = new_ticks - game_data->prev_ticks;
     game_data->prev_ticks = new_ticks;
-    float delta_time = (float)delta_ticks / 1000.f;
+    Uint64 delta_time = delta_ticks * 3;
 
-    game_data->flash_timer = SDL_max(game_data->flash_timer - delta_time * 3.f, 0.f);
+    game_data->flash_timer = game_data->flash_timer >= delta_time ? game_data->flash_timer - delta_time : 0;
 
     //RENDER
     if (game_data->end_game)
@@ -442,7 +442,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     }
     else
     {
-        Uint8 val = 255u - (Uint8)(255.f * game_data->flash_timer);
+        Uint8 val = 255u - (Uint8)(255 * game_data->flash_timer / 1000);
         SDL_SetRenderDrawColor(game_data->renderer, 255, val, val, 255);
     }
     SDL_RenderClear(game_data->renderer);
@@ -538,7 +538,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     game_data->end_game = false;
     game_data->won_game = false;
 
-    game_data->flash_timer = 0.f; //flash screen when trying to submit an invalid word
+    game_data->flash_timer = 0; //flash screen when trying to submit an invalid word
 
     game_data->prev_ticks = SDL_GetTicks();
 
